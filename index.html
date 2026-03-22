@@ -45,10 +45,10 @@
           VISHNU T C (Full Stack / AI Engineer)
         </div>
         <div class="text-sm opacity-80 mt-1">
-          System: <span class="text-white">v2.0.26</span> | Status:
+          System: <span class="text-white">v2.BTech.finalYear</span> | Status:
           <span class="text-white">Active</span>
         </div>
-        <div class="mt-2 text-xs opacity-60 italic">
+        <div class="mt-2 text-xs opacity-80 italic">
           Type
           <span class="text-white bg-emerald-900 px-1 not-italic">'help'</span>
           to explore.
@@ -58,7 +58,7 @@
 
       <div
         id="history"
-        class="flex-1 overflow-y-auto space-y-3 pr-2 scroll-smooth"
+        class="flex-1 overflow-y-auto space-y-3 pr-2 scroll-smooth w-full"
       ></div>
 
       <div class="shrink-0 pt-4 border-t border-emerald-900/50 mt-2">
@@ -80,15 +80,18 @@
       const input = document.getElementById("commandInput");
 
       const DATA = {
-        about: `Full Stack Engineer specialized in Elixir, Phoenix, and AWS. <br> Currently Interning at Superfuel AI. CGPA: 9.0/10.0.`,
+        about: `<p class="border-l border-emerald-900 pl-4">
+                <span class="text-white">Full Stack Engineer</span> (React, Phoenix, AWS infrastructure) with <span class="text-white">over 1 year of internship experience</span> building <span class="text-white">complex UI features</span> and <span class="text-white"> high-concurrency backend systems. </span> <br /> Experienced in agentic AI tooling, system design (ETL, load reduction), and architecting distributed data pipelines <span class="text-white"> to handle millions of events. </span> Looking for 2026 SDE roles.
+            </p>`,
         skills: `
-                <div class='grid grid-cols-1 md:grid-cols-2 gap-2 mt-2 border-l border-emerald-900 pl-4'>
-                    <div><span class='text-white'>[Languages]</span> Elixir, TS/JS, Python, Java, C</div>
-                    <div><span class='text-white'>[Backend]</span> Phoenix, Node, Express, Distributed Systems</div>
-                    <div><span class='text-white'>[Infra]</span> AWS (S3, SQS, Lambda, Athena), Docker</div>
-                    <div><span class='text-white'>[Frontend]</span> React (Remix), Svelte, Tailwind</div>
+                <div class='border-l border-emerald-900 pl-4 flex flex-col gap-y-1'>
+                    <span class='text-white'>[Languages]</span> Elixir, TS/JS, Python, Java, C
+                    <span class='text-white'>[Backend]</span> Phoenix, Node, Express
+                    <span class='text-white'>[Frontend]</span> React (Remix), Svelte, Tailwind
+                    <span class='text-white'>[Infra]</span> AWS (S3, SQS, Lambda, Athena)
+                    <span class='text-white'>[DB]</span> PostgreSQL, MySQL, MongoDB
                 </div>`,
-        experience: `
+        exp: `
                 <div class='mt-2 space-y-4 border-l border-emerald-900 pl-4'>
                     <div>
                         <p class='text-white font-bold'>Full Stack Engineer Intern @ Superfuel AI</p>
@@ -107,7 +110,21 @@
                     <div><span class='text-white font-bold'>Devi Mess:</span> Automated billing engine using Node.js workers. Eliminated 10hrs/mo manual work.</div>
                     <div><span class='text-white font-bold'>Elderly-Care:</span> Multi-criteria search for 5k+ beneficiaries via MongoDB compound indexing.</div>
                 </div>`,
-        contact: `Email: vishnutc13@gmail.com<br>LinkedIn: linkedin.com/in/vishnu-t-c<br>GitHub: github.com/TCvishnu`,
+        contact: `
+                <div class='mt-2 space-y-2 border-l border-emerald-900 pl-4 w-full'>
+                    <div class="flex items-center w-full justify-between">
+                        <span class="text-white w-20 font-bold">Email:</span>
+                        <a href="mailto:vishnutc13@gmail.com" class="hover:underline hover:text-white transition-colors">vishnutc13@gmail.com</a>
+                    </div>
+                    <div class="flex items-center w-full justify-between">
+                        <span class="text-white w-20 font-bold">LinkedIn:</span>
+                        <a href="https://www.linkedin.com/in/vishnu-t-c-a4a17a297/" target="_blank" class="hover:underline hover:text-white transition-colors italic">linkedin.com/in/vishnu-t-c-a4a17a297</a>
+                    </div>
+                    <div class="flex items-center w-full justify-between">
+                        <span class="text-white w-20 inline-block font-bold">GitHub:</span>
+                        <a href="https://github.com/TCvishnu" target="_blank" class="hover:underline hover:text-white transition-colors italic">github.com/TCvishnu</a>
+                    </div>
+                </div>`,
       };
 
       const COMMANDS = {
@@ -118,7 +135,6 @@
         projects: "Project highlights",
         contact: "Social links",
         clear: "Clear screen",
-        ls: "List virtual files",
         whoami: "Session info",
       };
 
@@ -154,16 +170,12 @@
           addHistory(DATA[cmd]);
         } else if (cmd === "help") {
           let helpHTML =
-            '<div class="grid grid-cols-2 max-w-sm gap-x-4 mt-1 border-l border-emerald-900 pl-4">';
+            '<div class="grid grid-cols-2 w-full gap-x-4 mt-1 border-l border-emerald-900 pl-4">';
           for (const [key, value] of Object.entries(COMMANDS)) {
             helpHTML += `<div class="text-white font-bold">${key}</div><div class="opacity-70">${value}</div>`;
           }
           helpHTML += "</div>";
           addHistory(helpHTML);
-        } else if (cmd === "ls") {
-          addHistory(
-            "<span class='text-white'>about.txt &nbsp; experience.pdf &nbsp; skills.config &nbsp; projects.log</span>",
-          );
         } else if (cmd === "whoami") {
           addHistory("vishnu_tc // software_engineer_intern");
         } else {

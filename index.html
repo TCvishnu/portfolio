@@ -78,6 +78,8 @@
     <script>
       const historyContainer = document.getElementById("history");
       const input = document.getElementById("commandInput");
+      const commandsHistory = [""];
+      let commandsHistoryIndex = 0;
 
       const DATA = {
         about: `<p class="border-l border-emerald-900 pl-4">
@@ -151,6 +153,18 @@
         if (e.key === "Enter") {
           const cmd = input.value.toLowerCase().trim();
 
+          commandsHistory.pop();
+          if (commandsHistory.length) {
+            if (commandsHistory[commandsHistory.length - 1] !== cmd) {
+              commandsHistory.push(cmd);
+            }
+          } else {
+            commandsHistory.push(cmd);
+          }
+
+          commandsHistory.push("");
+          commandsHistoryIndex = commandsHistory.length - 1;
+
           addHistory(
             `<span class="text-emerald-400 font-bold">guest@vishnu:~$</span> <span class="text-white">${cmd}</span>`,
           );
@@ -162,6 +176,23 @@
           }
 
           input.value = "";
+          console.log(commandsHistory);
+        } else if (e.key === "ArrowUp") {
+          if (commandsHistoryIndex > 0) {
+            e.preventDefault();
+            commandsHistoryIndex--;
+            input.value = commandsHistory[commandsHistoryIndex];
+
+            input.setSelectionRange(input.value.length, input.value.length);
+          }
+        } else if (e.key === "ArrowDown") {
+          if (commandsHistoryIndex < commandsHistory.length - 1) {
+            e.preventDefault();
+            commandsHistoryIndex++;
+            input.value = commandsHistory[commandsHistoryIndex];
+
+            input.setSelectionRange(input.value.length, input.value.length);
+          }
         }
       });
 

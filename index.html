@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vishnu T C | Terminal</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        font-family: "Fira Code", monospace;
+        background-color: #0a0a0a;
+        color: #10b981;
+        overflow: hidden;
+      }
+      ::-webkit-scrollbar {
+        width: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #0a0a0a;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #064e3b;
+        border-radius: 10px;
+      }
+
+      .command-input:focus {
+        outline: none;
+      }
+      .prompt {
+        color: #34d399;
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8 h-screen flex flex-col items-center">
+    <div
+      id="terminal-container"
+      class="w-full max-w-4xl flex flex-col h-[90vh] border border-emerald-900/30 p-4 rounded-lg bg-[#0d0d0d]"
+    >
+      <div id="header" class="shrink-0">
+        <div class="text-xl font-bold">
+          VISHNU T C (Full Stack / AI Engineer)
+        </div>
+        <div class="text-sm opacity-80 mt-1">
+          System: <span class="text-white">v2.0.26</span> | Status:
+          <span class="text-white">Active</span>
+        </div>
+        <div class="mt-2 text-xs opacity-60 italic">
+          Type
+          <span class="text-white bg-emerald-900 px-1 not-italic">'help'</span>
+          to explore.
+        </div>
+        <hr class="border-emerald-900/50 my-4" />
+      </div>
+
+      <div
+        id="history"
+        class="flex-1 overflow-y-auto space-y-3 pr-2 scroll-smooth"
+      ></div>
+
+      <div class="shrink-0 pt-4 border-t border-emerald-900/50 mt-2">
+        <div class="flex items-center">
+          <span class="prompt mr-2 shrink-0">guest@vishnu:~$</span>
+          <input
+            type="text"
+            id="commandInput"
+            autofocus
+            class="bg-transparent border-none outline-none flex-1 text-white caret-emerald-500"
+            autocomplete="off"
+          />
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const historyContainer = document.getElementById("history");
+      const input = document.getElementById("commandInput");
+
+      const DATA = {
+        about: `Full Stack Engineer specialized in Elixir, Phoenix, and AWS. <br> Currently Interning at Superfuel AI. CGPA: 9.0/10.0.`,
+        skills: `
+                <div class='grid grid-cols-1 md:grid-cols-2 gap-2 mt-2 border-l border-emerald-900 pl-4'>
+                    <div><span class='text-white'>[Languages]</span> Elixir, TS/JS, Python, Java, C</div>
+                    <div><span class='text-white'>[Backend]</span> Phoenix, Node, Express, Distributed Systems</div>
+                    <div><span class='text-white'>[Infra]</span> AWS (S3, SQS, Lambda, Athena), Docker</div>
+                    <div><span class='text-white'>[Frontend]</span> React (Remix), Svelte, Tailwind</div>
+                </div>`,
+        experience: `
+                <div class='mt-2 space-y-4 border-l border-emerald-900 pl-4'>
+                    <div>
+                        <p class='text-white font-bold'>Full Stack Engineer Intern @ Superfuel AI</p>
+                        <p class='text-xs opacity-70 italic'>Jun 2025 - Present</p>
+                        <p class='text-sm mt-1'>- Re-architected S3 Pre-signed URL pattern, cutting latency from 10s to 2s.</p>
+                        <p class='text-sm'>- Built Elixir GenServer rate limiters for 3rd party API adherence.</p>
+                    </div>
+                    <div>
+                        <p class='text-white font-bold'>Frontend Intern @ 10X Minds</p>
+                        <p class='text-xs opacity-70 italic'>Jul 2024 - Sep 2024</p>
+                        <p class='text-sm mt-1'>- Engineered complex workout logic in Svelte with recursive state management.</p>
+                    </div>
+                </div>`,
+        projects: `
+                <div class='mt-2 space-y-3 border-l border-emerald-900 pl-4'>
+                    <div><span class='text-white font-bold'>Devi Mess:</span> Automated billing engine using Node.js workers. Eliminated 10hrs/mo manual work.</div>
+                    <div><span class='text-white font-bold'>Elderly-Care:</span> Multi-criteria search for 5k+ beneficiaries via MongoDB compound indexing.</div>
+                </div>`,
+        contact: `Email: vishnutc13@gmail.com<br>LinkedIn: linkedin.com/in/vishnu-t-c<br>GitHub: github.com/TCvishnu`,
+      };
+
+      const COMMANDS = {
+        help: "List available commands",
+        about: "Profile summary",
+        skills: "Technical stack",
+        exp: "Experience details",
+        projects: "Project highlights",
+        contact: "Social links",
+        clear: "Clear screen",
+        ls: "List virtual files",
+        whoami: "Session info",
+      };
+
+      function addHistory(text, color = "text-emerald-500") {
+        const line = document.createElement("div");
+        line.className = `mb-1 ${color}`;
+        line.innerHTML = text;
+        historyContainer.appendChild(line);
+
+        historyContainer.scrollTop = historyContainer.scrollHeight;
+      }
+
+      input.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") {
+          const cmd = input.value.toLowerCase().trim();
+
+          addHistory(
+            `<span class="text-emerald-400 font-bold">guest@vishnu:~$</span> <span class="text-white">${cmd}</span>`,
+          );
+
+          if (cmd === "clear") {
+            historyContainer.innerHTML = "";
+          } else if (cmd !== "") {
+            processCommand(cmd);
+          }
+
+          input.value = "";
+        }
+      });
+
+      function processCommand(cmd) {
+        if (DATA[cmd]) {
+          addHistory(DATA[cmd]);
+        } else if (cmd === "help") {
+          let helpHTML =
+            '<div class="grid grid-cols-2 max-w-sm gap-x-4 mt-1 border-l border-emerald-900 pl-4">';
+          for (const [key, value] of Object.entries(COMMANDS)) {
+            helpHTML += `<div class="text-white font-bold">${key}</div><div class="opacity-70">${value}</div>`;
+          }
+          helpHTML += "</div>";
+          addHistory(helpHTML);
+        } else if (cmd === "ls") {
+          addHistory(
+            "<span class='text-white'>about.txt &nbsp; experience.pdf &nbsp; skills.config &nbsp; projects.log</span>",
+          );
+        } else if (cmd === "whoami") {
+          addHistory("vishnu_tc // software_engineer_intern");
+        } else {
+          addHistory(
+            `Command not found: ${cmd}. Type 'help' for available commands.`,
+            "text-red-400",
+          );
+        }
+      }
+
+      document.addEventListener("click", () => input.focus());
+    </script>
+  </body>
+</html>

@@ -163,6 +163,9 @@
         if (e.key === "Enter") {
           const cmd = input.value.toLowerCase().trim();
 
+          if (cmd === "") {
+            return;
+          }
           commandsHistory.pop();
           if (commandsHistory.length) {
             if (commandsHistory[commandsHistory.length - 1] !== cmd) {
